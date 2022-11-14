@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  color: #0f0f0f;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 55px;
+  @media (max-width: 1024px) {
+    padding-left: 48px;
+    padding-right: 48px;
+    margin: 0 auto;
+  }
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+.add-card {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  border-radius: 20px;
+  color: #0f0f0f;
+  @media (max-width: 768px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.add-button {
+  min-width: 70px;
+  background: #0095f6;
+  border: 0;
+  outline: 0;
+  border-radius: 0 20px 20px 0;
+  color: #fff;
+  &:hover {
+    opacity: 0.6;
+  }
+  &:focus {
+    outline: 2px solid #3c3c3c;
+  }
+}
+
+.input {
+  border: 1px solid #e5e5e5;
+  color: #0f0f0f;
+  outline: none;
+  border-radius: 20px 0 0 20px;
+  font-size: 16px;
+  padding: 16px 0 16px 24px;
+  flex: 1;
+  &:focus-within {
+    border-color: #ccc;
+  }
+}
+
+.filter-wrap {
+  margin: 24px auto 24px;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.filter {
+  padding: 12px 24px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  font-size: 14px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.05);
+  @media (max-width: 600px) {
+    text-align: center;
+  }
+}
+
+.active {
+  border-bottom: 1px solid #0095f6;
+  font-weight: 700;
+  color: #fff;
+  background-color: #0f0f0f;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // padding: 0 32px;
+  width: 100%;
+}
+
+.wrap-todos {
+  width: 100%;
+  max-width: 992px;
+  margin: 0 -24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  // column-count: 3;
+  // column-gap: 24px;
+  // @media (max-width: 768px) {
+  //   column-count: 2;
+  // column-gap: 8px;
+  // }
+  // @media (max-width: 576px) {
+  //   column-count: 1;
+  // column-gap: 4px;
+  // }
+}
