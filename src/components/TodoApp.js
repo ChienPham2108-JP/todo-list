@@ -3,7 +3,7 @@ import styles from './TodoApp.module.scss';
 import classNames from 'classnames/bind';
 import TodoCard from './TodoCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTodos, deleteTodo, addTodo, toggleTodo, editTodo } from '../redux/actions';
+import { fetchTodos, addTodo, toggleTodo } from '../redux/actions';
 import debounce from 'lodash.debounce';
 
 let cx = classNames.bind(styles);
@@ -25,6 +25,7 @@ function TodoApp() {
 
   let filterItems = [...items];
 
+  // Filter todo items for render
   if (active === 'completed') {
     filterItems = filterItems.filter((item) => item.isCompleted === true);
   }
@@ -32,16 +33,18 @@ function TodoApp() {
     filterItems = filterItems.filter((item) => item.isCompleted === false);
   }
 
+  // Call api to get todo items for render
   useEffect(() => {
     dispatch(fetchTodos());
   }, [dispatch]);
 
-  const handleDelete = (id) => {
-    if (window.confirm('Are you sure to wanted to delete the task???')) {
-      dispatch(deleteTodo(id));
-    }
-  };
+  // const handleDelete = (id) => {
+  //   if (window.confirm('Are you sure to wanted to delete the task???')) {
+  //     dispatch(deleteTodo(id));
+  //   }
+  // };
 
+  // Handle change on input field
   const handleInputChange = (e) => {
     // setTodo({
     //   ...todo,
@@ -50,6 +53,7 @@ function TodoApp() {
     setText(e.target.value);
   };
 
+  // Handle toggle complete todo
   const toggleComplete = (id) => {
     let targetItem = items.find((item) => {
       return id === item.id;
@@ -70,27 +74,27 @@ function TodoApp() {
   };
 
   // Handle edit todo item
-  const handleEdit = (e, target, id) => {
-    if (e.target.innerText === 'EDIT') {
-      target.disabled = false;
-      target.focus();
-      e.target.innerText = e.target.innerText === 'EDIT' ? 'SAVE' : 'EDIT';
-      return;
-    }
+  // const handleEdit = (e, target, id) => {
+  //   if (e.target.innerText === 'EDIT') {
+  //     target.disabled = false;
+  //     target.focus();
+  //     e.target.innerText = e.target.innerText === 'EDIT' ? 'SAVE' : 'EDIT';
+  //     return;
+  //   }
 
-    if (e.target.innerText === 'SAVE') {
-      // e.target.onclick = () => {
-      const itemEdited = {
-        id: id,
-        content: target.value,
-        isCompleted: false,
-      };
-      dispatch(editTodo(itemEdited));
-      e.target.innerText = 'EDIT';
-      target.disabled = true;
-    }
-    // }
-  };
+  //   if (e.target.innerText === 'SAVE') {
+  //     // e.target.onclick = () => {
+  //     const itemEdited = {
+  //       id: id,
+  //       content: target.value,
+  //       isCompleted: false,
+  //     };
+  //     dispatch(editTodo(itemEdited));
+  //     e.target.innerText = 'EDIT';
+  //     target.disabled = true;
+  //   }
+  //   // }
+  // };
 
   // Handle active status
   const handleActive = (e) => {
@@ -139,8 +143,7 @@ function TodoApp() {
                   id={item.id}
                   content={item.content}
                   toggleComplete={() => debounceToggleComplete(item.id)}
-                  handleDelete={() => handleDelete(item.id)}
-                  handleEdit={handleEdit}
+                  // handleEdit={handleEdit}
                 />
               ))
             ) : (

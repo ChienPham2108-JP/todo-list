@@ -1,13 +1,74 @@
 import styles from './TodoCard.module.scss';
 import classNames from 'classnames/bind';
-import { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useRef, useState } from 'react';
+import Modal from 'react-modal';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { deleteTodo, editTodo } from '../../redux/actions';
 
 let cx = classNames.bind(styles);
 
-function TodoCard({ content, isCompleted, handleDelete, toggleComplete, handleEdit, id }) {
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+Modal.setAppElement('#root');
+
+function TodoCard({ content, isCompleted, toggleComplete, id }) {
   const textareaRef = useRef('');
   let { loading } = useSelector((state) => state.todo);
+  let dispatch = useDispatch();
+
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    subtitle.style.color = '#151625';
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function handleDelete(id) {
+    console.log(id);
+    dispatch(deleteTodo(id));
+  }
+
+  // Handle edit todo
+  const handleEdit = (e, target, id) => {
+    if (e.target.innerText === 'EDIT') {
+      target.disabled = false;
+      target.focus();
+      e.target.innerText = e.target.innerText === 'EDIT' ? 'SAVE' : 'EDIT';
+      return;
+    }
+
+    if (e.target.innerText === 'SAVE') {
+      // e.target.onclick = () => {
+      const itemEdited = {
+        id: id,
+        content: target.value,
+        isCompleted: false,
+      };
+      dispatch(editTodo(itemEdited));
+      e.target.innerText = 'EDIT';
+      target.disabled = true;
+    }
+    // }
+  };
+
   return (
     <div className={cx('card-wrap')}>
       <button className={cx('task_checkbox')} onClick={toggleComplete}>
@@ -33,9 +94,30 @@ function TodoCard({ content, isCompleted, handleDelete, toggleComplete, handleEd
           <button disabled={loading} className={cx('edit')} onClick={(e) => handleEdit(e, textareaRef.current, id)}>
             Edit
           </button>
-          <button disabled={loading} className={cx('delete')} onClick={handleDelete}>
+          <button disabled={loading} className={cx('delete')} onClick={openModal}>
             Delete
           </button>
+
+          {/* Modal Delete todo card */}
+          <Modal
+            isOpen={modalIsOpen}
+            onAfterOpen={afterOpenModal}
+            onRequestClose={closeModal}
+            onClick={handleDelete}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+            <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Delete task</h2>
+            <div>Are you sure to wanted to delete this task?</div>
+            <div className={cx('wrapbtn')}>
+              <button className={cx('btn', 'danger')} onClick={() => handleDelete(id)}>
+                Delete
+              </button>
+              <button className={cx('btn', 'secondary')} onClick={closeModal}>
+                Cancel
+              </button>
+            </div>
+          </Modal>
         </div>
       </div>
     </div>

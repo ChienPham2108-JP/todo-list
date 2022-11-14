@@ -87,6 +87,11 @@ html {
   @media (max-width: 600px) {
     text-align: center;
   }
+  &:hover:not(.active) {
+    background-color: #3c3c3c;
+    color: #fff;
+    cursor: pointer;
+  }
 }
 
 .active {
