@@ -6,12 +6,39 @@ export const EDIT_TODO = 'EDIT_TODO';
 export const TOGGLE_TODO = 'TOGGLE_TODO';
 export const COMPLETED_TODOS = 'COMPLETED_TODOS';
 export const INCOMPLETED_TODOS = 'INCOMPLETED_TODOS';
+export const SET_LOADING = 'SET_LOADING';
 
 //action creators
 const setTodos = (items) => ({
   type: SET_TODOS,
   payload: items,
 });
+
+const setLoading = (loading) => ({
+  type: SET_LOADING,
+  payload: loading,
+});
+
+const todoDeleted = (id) => {
+  return {
+    type: DELETE_TODO,
+    payload: id,
+  };
+};
+
+const todoToggled = (item) => {
+  return {
+    type: TOGGLE_TODO,
+    payload: item,
+  };
+};
+
+const todoEdited = (item) => {
+  return {
+    type: EDIT_TODO,
+    payload: item,
+  };
+};
 
 export const fetchTodos = () => async (dispatch) => {
   try {
@@ -23,13 +50,6 @@ export const fetchTodos = () => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
-};
-
-const todoDeleted = (id) => {
-  return {
-    type: DELETE_TODO,
-    payload: id,
-  };
 };
 
 export const deleteTodo = (id) => async (dispatch) => {
@@ -60,13 +80,6 @@ export const addTodo = (text) => async (dispatch) => {
   }
 };
 
-const todoToggled = (item) => {
-  return {
-    type: TOGGLE_TODO,
-    payload: item,
-  };
-};
-
 export const toggleTodo = (item) => async (dispatch) => {
   try {
     item.isCompleted = !item.isCompleted;
@@ -81,14 +94,8 @@ export const toggleTodo = (item) => async (dispatch) => {
   }
 };
 
-const todoEdited = (item) => {
-  return {
-    type: EDIT_TODO,
-    payload: item,
-  };
-};
-
 export const editTodo = (item) => async (dispatch) => {
+  dispatch(setLoading(true));
   try {
     const res = await axios.put(`https://636b58bb7f47ef51e12db0e1.mockapi.io/todos/${item.id}`, item);
     console.log('response:', res.data);
@@ -98,4 +105,5 @@ export const editTodo = (item) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+  dispatch(setLoading(false));
 };

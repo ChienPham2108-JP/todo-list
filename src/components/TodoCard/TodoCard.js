@@ -1,12 +1,13 @@
 import styles from './TodoCard.module.scss';
 import classNames from 'classnames/bind';
 import { useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 let cx = classNames.bind(styles);
 
 function TodoCard({ content, isCompleted, handleDelete, toggleComplete, handleEdit, id }) {
   const textareaRef = useRef('');
-
+  let { loading } = useSelector((state) => state.todo);
   return (
     <div className={cx('card-wrap')}>
       <button className={cx('task_checkbox')} onClick={toggleComplete}>
@@ -29,10 +30,10 @@ function TodoCard({ content, isCompleted, handleDelete, toggleComplete, handleEd
           defaultValue={content}
         />
         <div className={cx('wrap-action')}>
-          <button className={cx('edit')} onClick={(e) => handleEdit(e, textareaRef.current, id)}>
+          <button disabled={loading} className={cx('edit')} onClick={(e) => handleEdit(e, textareaRef.current, id)}>
             Edit
           </button>
-          <button className={cx('delete')} onClick={handleDelete}>
+          <button disabled={loading} className={cx('delete')} onClick={handleDelete}>
             Delete
           </button>
         </div>

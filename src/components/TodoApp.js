@@ -31,7 +31,6 @@ function TodoApp() {
   if (active === 'incomplete') {
     filterItems = filterItems.filter((item) => item.isCompleted === false);
   }
-  console.log(filterItems);
 
   useEffect(() => {
     dispatch(fetchTodos());
@@ -75,19 +74,22 @@ function TodoApp() {
     if (e.target.innerText === 'EDIT') {
       target.disabled = false;
       target.focus();
+      e.target.innerText = e.target.innerText === 'EDIT' ? 'SAVE' : 'EDIT';
+      return;
     }
-    e.target.innerText = e.target.innerText === 'EDIT' ? 'SAVE' : 'EDIT';
+
     if (e.target.innerText === 'SAVE') {
-      e.target.onclick = () => {
-        const itemEdited = {
-          id: id,
-          content: target.value,
-          isCompleted: false,
-        };
-        dispatch(editTodo(itemEdited));
-        target.disabled = true;
+      // e.target.onclick = () => {
+      const itemEdited = {
+        id: id,
+        content: target.value,
+        isCompleted: false,
       };
+      dispatch(editTodo(itemEdited));
+      e.target.innerText = 'EDIT';
+      target.disabled = true;
     }
+    // }
   };
 
   // Handle active status

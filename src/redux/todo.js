@@ -1,7 +1,8 @@
-import { SET_TODOS, DELETE_TODO, EDIT_TODO, TOGGLE_TODO } from './actions';
+import { SET_TODOS, DELETE_TODO, EDIT_TODO, TOGGLE_TODO, SET_LOADING } from './actions';
 
 const initState = {
   items: [],
+  loading: false,
 };
 
 // reducer
@@ -48,7 +49,11 @@ const reducer = (state = initState, actions) => {
       return {
         items: [...itemsToggled],
       };
-
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: actions.payload,
+      };
     default:
       return state;
   }
