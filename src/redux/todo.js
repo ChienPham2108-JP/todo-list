@@ -1,4 +1,4 @@
-import { SET_TODOS, DELETE_TODO, EDIT_TODO, TOGGLE_TODO, SET_LOADING } from './actions';
+import { SET_TODOS, DELETE_TODO, EDIT_TODO, TOGGLE_TODO, SET_LOADING, ADD_TODO } from './actions';
 
 const initState = {
   items: [],
@@ -18,6 +18,11 @@ const reducer = (state = initState, actions) => {
       return {
         ...state,
         items: [...newItems],
+      };
+    case ADD_TODO:
+      return {
+        ...state,
+        items: [...state.items, actions.payload],
       };
     case EDIT_TODO:
       const stateEdited = { ...state };

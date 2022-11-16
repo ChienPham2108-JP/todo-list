@@ -1,7 +1,9 @@
 import axios from 'axios';
+// import { v4 as uuidv4 } from 'uuid';
 
 export const SET_TODOS = 'SET_TODOS';
 export const DELETE_TODO = 'DELETE_TODO';
+export const ADD_TODO = 'ADD_TODO';
 export const EDIT_TODO = 'EDIT_TODO';
 export const TOGGLE_TODO = 'TOGGLE_TODO';
 export const COMPLETED_TODOS = 'COMPLETED_TODOS';
@@ -13,6 +15,11 @@ const setTodos = (items) => ({
   type: SET_TODOS,
   payload: items,
 });
+
+// const todoAdded = (items) => ({
+//   type: ADD_TODO,
+//   payload: items,
+// });
 
 const setLoading = (loading) => ({
   type: SET_LOADING,
@@ -67,12 +74,15 @@ export const deleteTodo = (id) => async (dispatch) => {
 export const addTodo = (text) => async (dispatch) => {
   try {
     const item = {
+      // id: uuidv4(),
       content: text,
       isCompleted: false,
     };
+    console.log(item);
     const res = await axios.post(`https://636b58bb7f47ef51e12db0e1.mockapi.io/todos`, item);
     console.log('response:', res.data);
     if (res.status === 201) {
+      // dispatch(todoAdded(item));
       dispatch(fetchTodos());
     }
   } catch (error) {
